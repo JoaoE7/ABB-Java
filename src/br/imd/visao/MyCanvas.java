@@ -1,6 +1,5 @@
 package br.imd.visao;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -8,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,7 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import br.imd.modelo.No;
-import br.imd.modelo.Tree;
 
 @SuppressWarnings("serial")
 public class MyCanvas extends JPanel {
@@ -26,6 +25,7 @@ public class MyCanvas extends JPanel {
 	private ArrayList<No> nodeReferences;
 	private HashMap<No, ArrayList<Shape>> shapes;
 	private HashMap<No, Color> nodeColor;
+	private HashMap<No, Point2D.Float> nodePosition;
 	
 	public MyCanvas(String name, int width, int height) {
 		frame = new JFrame(name);
@@ -35,6 +35,7 @@ public class MyCanvas extends JPanel {
 		nodeReferences = new ArrayList<No>();
 		shapes = new HashMap<No, ArrayList<Shape>>();
 		nodeColor = new HashMap<No, Color>();
+		nodePosition = new HashMap<No, Point2D.Float>();
 		
 		canvasImage = this.createImage(width, height);
 		graphic = (Graphics2D)canvasImage.getGraphics();
@@ -50,17 +51,22 @@ public class MyCanvas extends JPanel {
 		g.drawImage(canvasImage, 0, 0, null);
 	}
 	
-	public void drawTree(Tree tree) {
-		
+	public void drawConnection(int x1, int y1, int x2, int y2) {
+		graphic.drawLine(x1, y1, x2, y2);
 	}
 	
-	public void drawNode(No no, int x, int y) {
+	public void drawNode(No no, int size, int x, int y) {
 		nodeReferences.add(no);
 		// Mudar X e Y;
 		nodeColor.put(no, Color.BLACK);
+		nodePosition.put(no, new Point2D.Float(x, y));
+		
 		shapes.put(no, new ArrayList<Shape>());
-		shapes.get(no).add(new Ellipse2D.Double(x, y, 100, 100));
-		shapes.get(no).add(new Ellipse2D.Double(x + 5 , y + 5, 90, 90));
+		shapes.get(no).add(new Ellipse2D.Double(x - size/2, y, size, size));
+		shapes.get(no).add(new Ellipse2D.Double(x - (size*0.90)/2,
+												y + (size*0.05),
+												(size*0.9),
+												(size*0.9)));
 		redraw();
 	}
 
@@ -83,7 +89,10 @@ public class MyCanvas extends JPanel {
 				graphic.fill(shape);
 				color = Color.WHITE;
 			}
+			graphic.setColor(Color.BLACK);
+			graphic.drawString("" + no.getAluno().getMatricula(), (int) nodePosition.get(no).getX(), (int) nodePosition.get(no).getY());
 		}
+		
 		repaint();
 	}
 }

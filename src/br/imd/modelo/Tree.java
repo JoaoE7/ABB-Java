@@ -55,6 +55,7 @@ public class Tree {
 			}
 		}
 	}
+	
 	public boolean remove (int matricula) {
 		if (this.root == null) {
 			return false;
@@ -138,7 +139,7 @@ public class Tree {
 	}
 	
 	public No busca(int matricula) {
-		// Se não encontrar, retorna nó vazio
+		// Se nao encontrar, retorna no vazio
 		if (root == null)
 			return new No(new Aluno(0,""));
 		

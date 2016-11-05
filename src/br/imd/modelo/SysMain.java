@@ -1,6 +1,7 @@
 package br.imd.modelo;
 
 import br.imd.visao.MyCanvas;
+import br.imd.visao.TreeDrawer;
 
 public class SysMain {
 	public static void main(String[] args) {
@@ -17,22 +18,31 @@ public class SysMain {
 		System.out.println(n.getAluno().getNome());
 		TreePrinter printer = new TreePrinter();
 		
+		/*
 		MyCanvas canvas = new MyCanvas("WOOW", 300, 300);
 		canvas.drawNode(n, 50, 50);
+		
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		canvas.highlightNode(n);
+		
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		canvas.unHighlightNode(n);
+		*/
+		
+		TreeDrawer td = new TreeDrawer(t, 800, 400);
+		td.drawTree();
 		
 		t.percorrerInOrdem(printer);
 		System.out.println();

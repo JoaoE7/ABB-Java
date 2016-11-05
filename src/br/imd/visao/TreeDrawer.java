@@ -5,7 +5,9 @@ import br.imd.modelo.Tree;
 public class TreeDrawer {
 	private Tree tree;
 	private MyCanvas canvas;
-	
+	private int NODESIZE = 50;
+	private int VERTICALDIST = 70;
+
 	public TreeDrawer(int width, int height) {
 		tree = new Tree();
 		canvas = new MyCanvas("Representação visual", width, height);
@@ -16,5 +18,34 @@ public class TreeDrawer {
 		canvas = new MyCanvas("Representação visual", width, height);
 	}
 	
+	// 50 é a distância vertical entre eles
+	public void drawTree() {
+		int leftX = 0;
+		int rightX = canvas.getWidth();
+		int currDepth = 1;
+
+		if (tree.getLeftTree() != null) {
+			canvas.drawConnection(leftX/2 + rightX/2, currDepth*VERTICALDIST + NODESIZE/2, 3*leftX/4 + rightX/4, (currDepth+1)*VERTICALDIST + NODESIZE/2);
+			drawTree(tree.getLeftTree(), currDepth+1, leftX, leftX/2 + rightX/2);
+		}
+		if (tree.getRightTree() != null) {
+			canvas.drawConnection(leftX/2 + rightX/2, currDepth*VERTICALDIST + NODESIZE/2, leftX/4 + 3*rightX/4, (currDepth+1)*VERTICALDIST + NODESIZE/2);
+			drawTree(tree.getRightTree(), currDepth+1, leftX/2 + rightX/2, rightX);
+		}
+		
+		canvas.drawNode(tree.getRoot(), NODESIZE, leftX/2 + rightX/2, currDepth*VERTICALDIST);
+	}
 	
+	private void drawTree(Tree tree, int currDepth, int leftX, int rightX) {
+		if (tree.getLeftTree() != null) {
+			canvas.drawConnection(leftX/2 + rightX/2, currDepth*VERTICALDIST + NODESIZE/2, 3*leftX/4 + rightX/4, (currDepth+1)*VERTICALDIST + NODESIZE/2);
+			drawTree(tree.getLeftTree(), currDepth+1, leftX, leftX/2 + rightX/2);
+		}
+		if (tree.getRightTree() != null) {
+			canvas.drawConnection(leftX/2 + rightX/2, currDepth*VERTICALDIST + NODESIZE/2, leftX/4 + 3*rightX/4, (currDepth+1)*VERTICALDIST + NODESIZE/2);
+			drawTree(tree.getRightTree(), currDepth+1, leftX/2 + rightX/2, rightX);
+		}
+		
+		canvas.drawNode(tree.getRoot(), NODESIZE, leftX/2 + rightX/2, currDepth*VERTICALDIST);
+	}
 }
