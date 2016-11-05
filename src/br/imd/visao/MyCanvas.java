@@ -24,7 +24,8 @@ public class MyCanvas extends JPanel {
 	private Image canvasImage;
 	private Graphics2D graphic;
 	private ArrayList<No> nodeReferences;
-	private HashMap<No, Shape> shapes;
+	private HashMap<No, ArrayList<Shape>> shapes;
+	private HashMap<No, Color> nodeColor;
 	
 	public MyCanvas(String name, int width, int height) {
 		frame = new JFrame(name);
@@ -32,7 +33,8 @@ public class MyCanvas extends JPanel {
 		this.setPreferredSize(new Dimension(width, height));
 		frame.pack();
 		nodeReferences = new ArrayList<No>();
-		shapes = new HashMap<No, Shape>();
+		shapes = new HashMap<No, ArrayList<Shape>>();
+		nodeColor = new HashMap<No, Color>();
 		
 		canvasImage = this.createImage(width, height);
 		graphic = (Graphics2D)canvasImage.getGraphics();
@@ -55,16 +57,33 @@ public class MyCanvas extends JPanel {
 	public void drawNode(No no, int x, int y) {
 		nodeReferences.add(no);
 		// Mudar X e Y;
-		shapes.put(no, new Ellipse2D.Double(x, y, 100, 100));
+		nodeColor.put(no, Color.BLACK);
+		shapes.put(no, new ArrayList<Shape>());
+		shapes.get(no).add(new Ellipse2D.Double(x, y, 100, 100));
+		shapes.get(no).add(new Ellipse2D.Double(x + 5 , y + 5, 90, 90));
+		redraw();
+	}
+
+	public void highlightNode(No no) {
+		nodeColor.put(no, Color.GREEN);
+		redraw();
+	}
+	
+	public void unHighlightNode(No no) {
+		nodeColor.put(no, Color.BLACK);
 		redraw();
 	}
 	
 	public void redraw() {
+		setForeground(Color.WHITE);
 		for (No no : nodeReferences) {
-			System.out.println("a\na\na\na\n");
-			Shape shape = shapes.get(no);
-			setForeground(Color.white);
-			graphic.fill(shape);
+			Color color = nodeColor.get(no);
+			for (Shape shape : shapes.get(no)) {
+				graphic.setColor(color);
+				graphic.fill(shape);
+				color = Color.WHITE;
+			}
 		}
+		repaint();
 	}
 }

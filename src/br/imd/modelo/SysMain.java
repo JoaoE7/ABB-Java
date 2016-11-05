@@ -1,7 +1,5 @@
 package br.imd.modelo;
 
-import java.awt.Color;
-
 import br.imd.visao.MyCanvas;
 
 public class SysMain {
@@ -21,6 +19,20 @@ public class SysMain {
 		
 		MyCanvas canvas = new MyCanvas("WOOW", 300, 300);
 		canvas.drawNode(n, 50, 50);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		canvas.highlightNode(n);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		canvas.unHighlightNode(n);
 		
 		t.percorrerInOrdem(printer);
 		System.out.println();
