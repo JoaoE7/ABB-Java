@@ -42,15 +42,25 @@ public class Tree {
 
 	public void inserir(No no) {
 		if(this.root == null) {
+			//Cria um novo nó
 		   this.root = no;
 		} else {
+			//highlight no root
 			if (no.getAluno().getMatricula() > this.root.getAluno().getMatricula()) {
+				//pausa
+				//Valor da matricula do root é menor do que a matricula do elemento que queremos inserir, 
+				//então  vai pra sub-árvore da direita
 				if (this.rightTree == null)
 					this.rightTree = new Tree();
-				this.rightTree.inserir(no);
+				//unHighlight no root
+				this.rightTree.inserir(no);	
 			} else if (no.getAluno().getMatricula() < this.root.getAluno().getMatricula()) {
+				//pausa
+				//Valor da matricula do root é maior do que a matricula do elemento que queremos inserir, 
+				//então  vai pra sub-árvore da esquerda
 				if (this.leftTree == null)
 					this.leftTree = new Tree();
+				//unHighlight no root
 				this.leftTree.inserir(no);
 			}
 		}
@@ -142,13 +152,24 @@ public class Tree {
 		// Se nao encontrar, retorna no vazio
 		if (root == null)
 			return new No(new Aluno(0,""));
+		////Highlight no root
 		
 		if (root.getAluno().getMatricula() == matricula)
+			//pausa
+			//(?) Espera alguma confirmação para chamar unHighlight 
 			return root;
 		
 		if (root.getAluno().getMatricula() > matricula)
+			//pausa
+			//Valor da matricula do root é maior do que a matricula do elemento que estamos buscando,
+			//então vai pra arvore da esquerda
+			//unHighlight no root
 			return leftTree.busca(matricula);
 		else
+			//pausa
+			//Valor da matricula do root é menor do que a matricula do elemento que estamos buscando,
+			//então vai pra arvore da direita
+			//unHighlight no root
 			return rightTree.busca(matricula);
 	}
 	
