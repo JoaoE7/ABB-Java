@@ -1,5 +1,7 @@
 package br.imd.modelo;
 
+import br.imd.visao.MyCanvas;
+
 public class Tree {
 	
 	private No root;
@@ -160,6 +162,40 @@ public class Tree {
 		if (rightTree != null) rightTree.percorrerInOrdem(func);
 	}
 
+	public void percorrerInOrdemVisual(MyCanvas canvas) {
+		if (root == null) {
+			System.out.println("Árvore vazia, retornando...");
+			pause();
+			return;
+		}
+		
+		canvas.highlightNode(root);
+		if (leftTree != null) {		
+			System.out.println("Acessando a sub-árvore esquerda:");
+			pause();
+			canvas.unHighlightNode(root);
+			leftTree.percorrerInOrdemVisual(canvas);
+			canvas.highlightNode(root);
+		}
+		
+		System.out.println("Acessando o nó atual: ");
+		System.out.println("Matricula: " + root.getAluno().getMatricula() +
+					       " / Nome: " + root.getAluno().getNome());
+		pause();
+		
+		if (rightTree != null) {
+			System.out.println("Acessando a sub-árvore direita:");
+			pause();
+			canvas.unHighlightNode(root);
+			rightTree.percorrerInOrdemVisual(canvas);	
+			canvas.highlightNode(root);
+		}
+	
+		System.out.println("Retornando...");
+		pause();
+		canvas.unHighlightNode(root);
+	}
+	
 	public void percorrerPreOrdem(VisitFunction func) {
 		if (root == null) return;
 		
@@ -168,11 +204,88 @@ public class Tree {
 		if (rightTree != null) rightTree.percorrerPreOrdem(func);
 	}
 	
+	public void percorrerPreOrdemVisual(MyCanvas canvas) {
+		if (root == null) {
+			System.out.println("Árvore vazia, retornando...");
+			pause();
+			return;
+		}
+		
+		canvas.highlightNode(root);
+		System.out.println("Acessando o nó atual: ");
+		System.out.println("Matricula: " + root.getAluno().getMatricula() +
+					       " / Nome: " + root.getAluno().getNome());
+		pause();
+		
+		if (leftTree != null) {		
+			System.out.println("Acessando a sub-árvore esquerda:");
+			pause();
+			canvas.unHighlightNode(root);
+			leftTree.percorrerPreOrdemVisual(canvas);
+			canvas.highlightNode(root);
+		}
+		
+		if (rightTree != null) {
+			System.out.println("Acessando a sub-árvore direita:");
+			pause();
+			canvas.unHighlightNode(root);
+			rightTree.percorrerPreOrdemVisual(canvas);
+			canvas.highlightNode(root);
+		}
+		
+		System.out.println("Retornando...");
+		pause();
+		canvas.unHighlightNode(root);
+	}
+	
 	public void percorrerPosOrdem(VisitFunction func) {
 		if (root == null) return;
 		
 		if (leftTree != null) leftTree.percorrerPosOrdem(func);
 		if (rightTree != null) rightTree.percorrerPosOrdem(func);
 		func.execute(root);
+	}
+	
+	public void percorrerPosOrdemVisual(MyCanvas canvas) {
+		if (root == null) {
+			System.out.println("Árvore vazia, retornando...");
+			pause();
+			return;
+		}
+		
+		canvas.highlightNode(root);
+		
+		if (leftTree != null) {		
+			System.out.println("Acessando a sub-árvore esquerda:");
+			pause();
+			canvas.unHighlightNode(root);
+			leftTree.percorrerPosOrdemVisual(canvas);
+			canvas.highlightNode(root);
+		}
+		
+		if (rightTree != null) {
+			System.out.println("Acessando a sub-árvore direita:");
+			pause();
+			canvas.unHighlightNode(root);
+			rightTree.percorrerPosOrdemVisual(canvas);
+			canvas.highlightNode(root);
+		}
+		
+		System.out.println("Acessando o nó atual: ");
+		System.out.println("Matricula: " + root.getAluno().getMatricula() +
+					       " / Nome: " + root.getAluno().getNome());
+		pause();
+		
+		System.out.println("Retornando...");
+		pause();
+		canvas.unHighlightNode(root);
+	}
+	
+	public void pause() {
+		try {
+			Thread.sleep(1500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

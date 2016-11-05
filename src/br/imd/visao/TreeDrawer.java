@@ -48,4 +48,22 @@ public class TreeDrawer {
 		
 		canvas.drawNode(tree.getRoot(), NODESIZE, leftX/2 + rightX/2, currDepth*VERTICALDIST);
 	}
+
+	public void percorrerInOrdem() {
+		System.out.println("=== Percorrimento em ordem simetrica ===");
+		tree.percorrerInOrdemVisual(canvas);
+		System.out.println();
+	}
+
+	public void percorrerPreOrdem() {
+		System.out.println("=== Percorrimento em pre-ordem ===");
+		tree.percorrerPreOrdemVisual(canvas);
+		System.out.println();
+	}
+	
+	public void percorrerPosOrdem() {
+		System.out.println("=== Percorrimento em pos-ordem ===");
+		tree.percorrerPosOrdemVisual(canvas);
+		System.out.println();
+	}
 }

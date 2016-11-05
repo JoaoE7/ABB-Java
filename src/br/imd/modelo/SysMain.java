@@ -44,10 +44,15 @@ public class SysMain {
 		TreeDrawer td = new TreeDrawer(t, 800, 400);
 		td.drawTree();
 		
+		td.percorrerPreOrdem();
+		td.percorrerInOrdem();
+		td.percorrerPosOrdem();
+/*		
 		t.percorrerInOrdem(printer);
 		System.out.println();
 		t.percorrerPosOrdem(printer);
 		System.out.println();
 		t.percorrerPreOrdem(printer);
+*/
 	}
 }
