@@ -1,5 +1,3 @@
-package br.imd.visao;
-
 import br.imd.modelo.Tree;
 
 public class TreeDrawer {
@@ -10,15 +8,15 @@ public class TreeDrawer {
 
 	public TreeDrawer(int width, int height) {
 		tree = new Tree();
-		canvas = new MyCanvas("RepresentaÁ„o visual", width, height);
+		canvas = new MyCanvas("Representa√ß√£o visual", width, height);
 	}
 	
 	public TreeDrawer(Tree tree, int width, int height) {
 		this.tree = tree;
-		canvas = new MyCanvas("RepresentaÁ„o visual", width, height);
+		canvas = new MyCanvas("Representa√ß√£o visual", width, height);
 	}
 	
-	// 50 È a dist‚ncia vertical entre eles
+	// 50 √© a dist√¢ncia vertical entre eles
 	public void drawTree() {
 		int leftX = 0;
 		int rightX = canvas.getWidth();
@@ -48,7 +46,7 @@ public class TreeDrawer {
 		
 		canvas.drawNode(tree.getRoot(), NODESIZE, leftX/2 + rightX/2, currDepth*VERTICALDIST);
 	}
-
+	
 	public void percorrerInOrdem() {
 		System.out.println("=== Percorrimento em ordem simetrica ===");
 		tree.percorrerInOrdemVisual(canvas);
@@ -60,10 +58,39 @@ public class TreeDrawer {
 		tree.percorrerPreOrdemVisual(canvas);
 		System.out.println();
 	}
-	
+
 	public void percorrerPosOrdem() {
 		System.out.println("=== Percorrimento em pos-ordem ===");
 		tree.percorrerPosOrdemVisual(canvas);
 		System.out.println();
 	}
+	
+	public void busca(int matricula) {
+		System.out.println("=== Busca ===");
+		tree.buscaVisual(canvas, matricula);
+		System.out.println();
+	}
+	
+	public void insereAluno(int matricula, String nome) {
+        Aluno aluno = new Aluno(matricula, nome);
+        No no = new No(aluno);
+        inserir(no);
+    }
+	
+	public void inserir(No no ) {
+		System.out.println("=== Inserir ===");
+		tree.inserirVisual(canvas, no);
+		drawTree();
+		System.out.println("Inser√ß√£o do " +no.getAluno().getMatricula()+ " foi concluido");
+		System.out.println();
+	}
+	
+	public void remove(int matricula) {
+		System.out.println("=== Remove ===");
+		tree.removeVisual(canvas, matricula);
+		canvas.redraw();
+		drawTree();
+		System.out.println("Remo√ß√£o de "+ matricula +" feita com sucesso");
+		System.out.println();
+	}	 
 }
