@@ -12,7 +12,7 @@ public class SysMain {
 		t.insereAluno(3, "asd");
 		t.insereAluno(6, "glubglub");
 		t.insereAluno(5, "qweqweqwe");
-		t.insereAluno(7, "dadaad");
+		t.insereAluno(8, "dadaad");
 		
 		No n = t.busca(4);
 		System.out.println(n.getAluno().getNome());
@@ -44,15 +44,11 @@ public class SysMain {
 		TreeDrawer td = new TreeDrawer(t, 800, 400);
 		td.drawTree();
 		
+		//td.percorrerPreOrdem();
+		//td.percorrerInOrdem();
+		//td.percorrerPosOrdem();
+		td.insereAluno(7, "ksfdjksfhj");
+		td.remove(4);
 		td.percorrerPreOrdem();
-		td.percorrerInOrdem();
-		td.percorrerPosOrdem();
-/*		
-		t.percorrerInOrdem(printer);
-		System.out.println();
-		t.percorrerPosOrdem(printer);
-		System.out.println();
-		t.percorrerPreOrdem(printer);
-*/
 	}
 }
