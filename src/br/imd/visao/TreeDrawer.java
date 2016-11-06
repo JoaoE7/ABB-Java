@@ -1,22 +1,38 @@
+package br.imd.visao;
+
+import br.imd.modelo.Aluno;
+import br.imd.modelo.No;
 import br.imd.modelo.Tree;
 
+/* Classe que administra a arvore e o canvas e faz a ligação entre eles */
 public class TreeDrawer {
 	private Tree tree;
 	private MyCanvas canvas;
 	private int NODESIZE = 50;
 	private int VERTICALDIST = 70;
 
+	/* Construtor simples.
+	 * Constroi uma nova árvore e um canvas com o tamanho dado
+	 */
 	public TreeDrawer(int width, int height) {
 		tree = new Tree();
-		canvas = new MyCanvas("RepresentaÃ§Ã£o visual", width, height);
+		canvas = new MyCanvas("Representacao visual", width, height);
 	}
 	
+	/* Age como o construtor anterior, mas recebe uma árvore já construida
+	 * como parâmetro e em seguida já a desenha no canvas
+	 */
 	public TreeDrawer(Tree tree, int width, int height) {
 		this.tree = tree;
-		canvas = new MyCanvas("RepresentaÃ§Ã£o visual", width, height);
+		canvas = new MyCanvas("Representacao visual", width, height);
+		drawTree();
 	}
 	
-	// 50 Ã© a distÃ¢ncia vertical entre eles
+	/* Função que desenha a árvore no canvas
+	 * Passo base da recursão
+	 * Responsável por desenhar as linhas entre os nós e dar a posição
+	 * correta a cada um eles para a função do canvas que armazena os nos
+	 */
 	public void drawTree() {
 		int leftX = 0;
 		int rightX = canvas.getWidth();
@@ -31,9 +47,10 @@ public class TreeDrawer {
 			drawTree(tree.getRightTree(), currDepth+1, leftX/2 + rightX/2, rightX);
 		}
 		
-		canvas.drawNode(tree.getRoot(), NODESIZE, leftX/2 + rightX/2, currDepth*VERTICALDIST);
+		canvas.storeNode(tree.getRoot(), leftX/2 + rightX/2, currDepth*VERTICALDIST);
 	}
 	
+	/* Passo recursivo da função acima */
 	private void drawTree(Tree tree, int currDepth, int leftX, int rightX) {
 		if (tree.getLeftTree() != null) {
 			canvas.drawConnection(leftX/2 + rightX/2, currDepth*VERTICALDIST + NODESIZE/2, 3*leftX/4 + rightX/4, (currDepth+1)*VERTICALDIST + NODESIZE/2);
@@ -44,53 +61,60 @@ public class TreeDrawer {
 			drawTree(tree.getRightTree(), currDepth+1, leftX/2 + rightX/2, rightX);
 		}
 		
-		canvas.drawNode(tree.getRoot(), NODESIZE, leftX/2 + rightX/2, currDepth*VERTICALDIST);
+		canvas.storeNode(tree.getRoot(), leftX/2 + rightX/2, currDepth*VERTICALDIST);
 	}
 	
+	/* Percorre a árvore em ordem simétrica */
 	public void percorrerInOrdem() {
 		System.out.println("=== Percorrimento em ordem simetrica ===");
 		tree.percorrerInOrdemVisual(canvas);
 		System.out.println();
 	}
 
+	/* Percorre a árvore em pré-ordem */
 	public void percorrerPreOrdem() {
 		System.out.println("=== Percorrimento em pre-ordem ===");
 		tree.percorrerPreOrdemVisual(canvas);
 		System.out.println();
 	}
 
+	/* Percorre a árvore em pós-ordem*/
 	public void percorrerPosOrdem() {
 		System.out.println("=== Percorrimento em pos-ordem ===");
 		tree.percorrerPosOrdemVisual(canvas);
 		System.out.println();
 	}
 	
+	/* Inicia a busca pelo elemento da árvore através da matrícula */
 	public void busca(int matricula) {
 		System.out.println("=== Busca ===");
 		tree.buscaVisual(canvas, matricula);
 		System.out.println();
 	}
 	
+	/* Insere um aluno na árvore */
 	public void insereAluno(int matricula, String nome) {
         Aluno aluno = new Aluno(matricula, nome);
         No no = new No(aluno);
         inserir(no);
     }
 	
-	public void inserir(No no ) {
+	/* Insere um no na árvore */
+	public void inserir(No no) {
 		System.out.println("=== Inserir ===");
-		tree.inserirVisual(canvas, no);
+		tree.inserirVisual(no, canvas);
 		drawTree();
-		System.out.println("InserÃ§Ã£o do " +no.getAluno().getMatricula()+ " foi concluido");
+		System.out.println("Insercao do " + no.getAluno().getMatricula() + " foi concluido");
 		System.out.println();
 	}
 	
+	/* Remove um no da árvore de acordo com a matricula passada no parâmetro */
 	public void remove(int matricula) {
 		System.out.println("=== Remove ===");
 		tree.removeVisual(canvas, matricula);
-		canvas.redraw();
+		canvas.clear();
 		drawTree();
-		System.out.println("RemoÃ§Ã£o de "+ matricula +" feita com sucesso");
+		System.out.println("Remocao de "+ matricula +" feita com sucesso");
 		System.out.println();
 	}	 
 }

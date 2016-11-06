@@ -2,8 +2,12 @@ package br.imd.modelo;
 
 import br.imd.visao.MyCanvas;
 
-public class Tree {
-	
+/* Implementação da árvore binária de busca
+ * Contém tanto os métodos tradicionais quanto métodos
+ * focados na implementação visual da árvore
+ */
+
+public class Tree {	
 	private No root;
 	private Tree leftTree;
 	private Tree rightTree;
@@ -58,7 +62,7 @@ public class Tree {
 		}
 	}
 	
-	public void inserirVisual(MyCanvas canvas, No no) {
+	public void inserirVisual(No no, MyCanvas canvas) {
 		if(this.root == null) {
 			System.out.println("O lugar foi encontrado");
 			pause();
@@ -68,23 +72,23 @@ public class Tree {
 			System.out.println("Comparando " + this.root.getAluno().getMatricula() + " com " + no.getAluno().getMatricula());
 			pause();
 			if (no.getAluno().getMatricula() > this.root.getAluno().getMatricula()) {
-				System.out.println("Valor " +root.getAluno().getMatricula()+ " é menor que " + no.getAluno().getMatricula());
+				System.out.println("Valor " + root.getAluno().getMatricula() + " eh menor que " + no.getAluno().getMatricula());
 				pause();
-				System.out.println("Buscando lugar para inserir " +no.getAluno().getMatricula()+ " na arvore da direita ");
+				System.out.println("Buscando lugar para inserir " + no.getAluno().getMatricula() + " na sub-arvore direita");
 				if (this.rightTree == null)
 					this.rightTree = new Tree();
 				pause();
 				canvas.unHighlightNode(root);
-				this.rightTree.inserirVisual(canvas, no);	
+				this.rightTree.inserirVisual(no, canvas);	
 			} else if (no.getAluno().getMatricula() < this.root.getAluno().getMatricula()) {
-				System.out.println("Valor " +root.getAluno().getMatricula()+ " é maior que " + no.getAluno().getMatricula());
+				System.out.println("Valor " + root.getAluno().getMatricula() + " eh maior que " + no.getAluno().getMatricula());
 				pause();
-				System.out.println("Buscando lugar para inserir " +no.getAluno().getMatricula()+ " na arvore da esquerda ");
+				System.out.println("Buscando lugar para inserir " +no.getAluno().getMatricula()+ " na sub-arvore esquerda");
 				if (this.leftTree == null)
 					this.leftTree = new Tree();
 				pause();
 				canvas.unHighlightNode(root);
-				this.leftTree.inserirVisual(canvas, no);
+				this.leftTree.inserirVisual(no, canvas);
 			}
 		}
 	}
@@ -171,25 +175,24 @@ public class Tree {
 		return true;
 	}
 	
-	//Dando erro
 	public boolean removeVisual (MyCanvas canvas, int matricula) {
 		if (this.root == null) {
-			System.out.println("Árvore vazia");
+			System.out.println("Arvore vazia");
 			return false;
 		}
-		System.out.println("Buscando nó " +matricula+ "para remover");
+		System.out.println("Buscando no " + matricula + " para remover");
 		pause();
 		if (this.root.getAluno().getMatricula() == matricula) {
 			canvas.highlightNode(root);
-			System.out.println("Nó encontrado");
+			System.out.println("No encontrado");
 			pause();
 			if (this.leftTree == null && this.rightTree == null) {
-				System.out.println("Nó não tem filhos");
+				System.out.println("No nao tem filhos");
 				this.root = null;
 				pause();
 				canvas.unHighlightNode(root);
 			} else if (this.leftTree != null && this.rightTree == null) {
-				System.out.println("Nó tem um filho");
+				System.out.println("No tem um filho");
 				pause();
 				System.out.println("Filho da esquerda fica no seu lugar");
 				this.root = this.leftTree.root;
@@ -198,7 +201,7 @@ public class Tree {
 				pause();
 				canvas.unHighlightNode(root);
 			} else if (this.leftTree == null && this.rightTree != null) {
-				System.out.println("Nó tem um filho");
+				System.out.println("No tem um filho");
 				pause();
 				System.out.println("Filho da direita fica no seu lugar");
 				this.root = this.rightTree.root;
@@ -207,9 +210,9 @@ public class Tree {
 				pause();
 				canvas.unHighlightNode(root);
 			} else {
-				System.out.println("Nó tem dois filhos");
+				System.out.println("No tem dois filhos");
 				pause();
-				System.out.println("Buscando maior elemento da árvore da esquerda");
+				System.out.println("Buscando maior elemento da arvore da esquerda");
 				Tree ant = this;
 				Tree atual = this.leftTree;
 				canvas.highlightNode(atual.root);
@@ -232,85 +235,70 @@ public class Tree {
 				pause();
 				canvas.unHighlightNode(root);
 			}
+			
+			canvas.removeNode(root);
 			return true;
 		}
 		Tree ant = null;
 		Tree atual = this;
-		canvas.highlightNode(atual.root);
 		while (atual != null && atual.root.getAluno().getMatricula() != matricula) {
+			canvas.highlightNode(atual.root);
 			if (atual.root.getAluno().getMatricula() > matricula) {
 				ant = atual;
 				atual = atual.leftTree;
 				pause();
 				canvas.unHighlightNode(ant.root);
-				canvas.highlightNode(atual.root);
 			} else {
 				ant = atual;
 				atual = atual.rightTree;
 				pause();
 				canvas.unHighlightNode(ant.root);
-				canvas.highlightNode(atual.root);
 			}
 		}
 		
 		if (atual == null) {
-			pause();
-			canvas.unHighlightNode(atual.root);
-			System.out.println("Valor " + matricula + " não foi achado na árvore");
+			System.out.println("Valor " + matricula + " nao foi encontrado na arvore");
 			pause();
 			return false;
 		}
 		
-		System.out.println("Nó encontrado");
-		pause();
 		if (atual.leftTree == null && atual.rightTree == null) {
+			System.out.println("No nao tem filhos");
 			if (ant.leftTree == atual) {
-				System.out.println("Nó não tem filhos");
 				ant.leftTree = null;
-				pause();
-				canvas.unHighlightNode(atual.root);
 			} else {
-				System.out.println("Nó não tem filhos");
 				ant.rightTree = null;
-				pause();
-				canvas.unHighlightNode(atual.root);
 			}
+			pause();
+			canvas.unHighlightNode(atual.root);
 		} else if (atual.leftTree != null && atual.rightTree == null) {
+			System.out.println("No tem um filho");
+			pause();
 			if (ant.leftTree == atual) {
-				System.out.println("Nó tem um filho");
-				pause();
 				System.out.println("Filho da esquerda fica no seu lugar");
 				ant.leftTree = atual.leftTree;
-				pause();
-				canvas.unHighlightNode(atual.root);
 			} else {
-				System.out.println("Nó tem um filho");
-				pause();
 				System.out.println("Filho da esquerda fica no seu lugar");
 				ant.rightTree = atual.leftTree;
-				pause();
-				canvas.unHighlightNode(atual.root);
 			}
+			pause();
+			canvas.unHighlightNode(atual.root);
 		} else if (atual.leftTree == null && atual.rightTree != null) {
+			System.out.println("No tem um filho");
+			pause();
 			if (ant.leftTree == atual) {
-				System.out.println("Nó tem um filho");
-				pause();
 				System.out.println("Filho da direita fica no seu lugar");
 				ant.leftTree = atual.rightTree;
-				pause();
-				canvas.unHighlightNode(atual.root);
 			} else {
-				System.out.println("Nó tem um filho");
-				pause();
 				System.out.println("Filho da direita fica no seu lugar");
 				ant.rightTree = atual.rightTree;
-				pause();
-				canvas.unHighlightNode(atual.root);
 			}
-		} else {
-			System.out.println("Nó tem dois filhos");
 			pause();
-			System.out.println("Buscando maior elemento da árvore da esquerda");
+			canvas.unHighlightNode(atual.root);
+		} else {
+			System.out.println("No tem dois filhos");
+			pause();
+			System.out.println("Buscando maior elemento da sub-arvore esquerda");
 			Tree ant2 = atual;
 			Tree atual2 = atual.leftTree;
 			canvas.highlightNode(atual2.root);
@@ -333,6 +321,8 @@ public class Tree {
 			pause();
 			canvas.unHighlightNode(atual.root);
 		}
+		
+		canvas.removeNode(atual.root);
 		return true;
 	}
 	
@@ -355,7 +345,7 @@ public class Tree {
 	public No buscaVisual(MyCanvas canvas, int matricula) {
 		// Se nao encontrar, retorna no vazio
 		if (root == null) {
-			System.out.println("Valor " + matricula + " não foi encontrado na árvore");
+			System.out.println("Valor " + matricula + " No foi encontrado na Arvore");
 			pause();
 			return new No(new Aluno(0,""));
 		}
@@ -371,22 +361,27 @@ public class Tree {
 		}
 		
 		if (root.getAluno().getMatricula() > matricula) {
-			System.out.println("Valor " +root.getAluno().getMatricula()+ " é maior que " + matricula);
+			System.out.println("Valor " + root.getAluno().getMatricula() + " eh maior que " + matricula);
 			pause();
-			System.out.println("Buscando " +matricula+ " na arvore da esquerda ");
+			System.out.println("Buscando " + matricula + " na arvore da esquerda ");
 			pause();
 			canvas.unHighlightNode(root);
 			return leftTree.buscaVisual(canvas, matricula);
 		} else {
-			System.out.println("Valor " +root.getAluno().getMatricula()+ " é menor que " + matricula);
+			System.out.println("Valor " + root.getAluno().getMatricula() + " eh menor que " + matricula);
 			pause();
-			System.out.println("Buscando " +matricula+ " na arvore da direita ");
+			System.out.println("Buscando " + matricula + " na arvore da direita ");
 			pause();
 			canvas.unHighlightNode(root);
 			return rightTree.buscaVisual(canvas, matricula);
 		}
 	}
 	
+	/* Percorre a árvore em ordem simétrica
+	 * Recebe uma classe que implementa VisitFunction
+	 * por parâmetro, podendo assim realizar as mais diversas
+	 * operações desejadas.
+	 */ 
 	public void percorrerInOrdem(VisitFunction func) {
 		if (root == null) return;
 		
@@ -395,29 +390,32 @@ public class Tree {
 		if (rightTree != null) rightTree.percorrerInOrdem(func);
 	}
 
+	/* Percorre a árvore em ordem simétrica imprimindo no console os
+	 * eventos e as informações do nó atual
+	 */
 	public void percorrerInOrdemVisual(MyCanvas canvas) {
 		if (root == null) {
-			System.out.println("Árvore vazia, retornando...");
+			System.out.println("Arvore vazia, retornando...");
 			pause();
 			return;
 		}
 		
 		canvas.highlightNode(root);
 		if (leftTree != null) {		
-			System.out.println("Acessando a sub-árvore esquerda:");
+			System.out.println("Acessando a sub-arvore esquerda:");
 			pause();
 			canvas.unHighlightNode(root);
 			leftTree.percorrerInOrdemVisual(canvas);
 			canvas.highlightNode(root);
 		}
 		
-		System.out.println("Acessando o nó atual: ");
+		System.out.println("Acessando o no atual: ");
 		System.out.println("Matricula: " + root.getAluno().getMatricula() +
 					       " / Nome: " + root.getAluno().getNome());
 		pause();
 		
 		if (rightTree != null) {
-			System.out.println("Acessando a sub-árvore direita:");
+			System.out.println("Acessando a sub-arvore direita:");
 			pause();
 			canvas.unHighlightNode(root);
 			rightTree.percorrerInOrdemVisual(canvas);	
@@ -429,6 +427,11 @@ public class Tree {
 		canvas.unHighlightNode(root);
 	}
 	
+	/* Percorre a árvore em pré-ordem
+	 * Recebe uma classe que implementa VisitFunction
+	 * por parâmetro, podendo assim realizar as mais diversas
+	 * operações desejadas.
+	 */
 	public void percorrerPreOrdem(VisitFunction func) {
 		if (root == null) return;
 		
@@ -437,21 +440,24 @@ public class Tree {
 		if (rightTree != null) rightTree.percorrerPreOrdem(func);
 	}
 	
+	/* Percorre a árvore em pré-ordem imprimindo no console os
+	 * eventos e as informações do nó atual
+	 */
 	public void percorrerPreOrdemVisual(MyCanvas canvas) {
 		if (root == null) {
-			System.out.println("Árvore vazia, retornando...");
+			System.out.println("arvore vazia, retornando...");
 			pause();
 			return;
 		}
 		
 		canvas.highlightNode(root);
-		System.out.println("Acessando o nó atual: ");
+		System.out.println("Acessando o no atual: ");
 		System.out.println("Matricula: " + root.getAluno().getMatricula() +
 					       " / Nome: " + root.getAluno().getNome());
 		pause();
 		
 		if (leftTree != null) {		
-			System.out.println("Acessando a sub-árvore esquerda:");
+			System.out.println("Acessando a sub-arvore esquerda:");
 			pause();
 			canvas.unHighlightNode(root);
 			leftTree.percorrerPreOrdemVisual(canvas);
@@ -459,7 +465,7 @@ public class Tree {
 		}
 		
 		if (rightTree != null) {
-			System.out.println("Acessando a sub-árvore direita:");
+			System.out.println("Acessando a sub-arvore direita:");
 			pause();
 			canvas.unHighlightNode(root);
 			rightTree.percorrerPreOrdemVisual(canvas);
@@ -471,6 +477,11 @@ public class Tree {
 		canvas.unHighlightNode(root);
 	}
 	
+	/* Percorre a árvore em pós-ordem
+	 * Recebe uma classe que implementa VisitFunction
+	 * por parâmetro, podendo assim realizar as mais diversas
+	 * operações desejadas.
+	 */
 	public void percorrerPosOrdem(VisitFunction func) {
 		if (root == null) return;
 		
@@ -479,9 +490,12 @@ public class Tree {
 		func.execute(root);
 	}
 	
+	/* Percorre a árvore em pós-ordem imprimindo no console os
+	 * eventos e as informações do nó atual
+	 */
 	public void percorrerPosOrdemVisual(MyCanvas canvas) {
 		if (root == null) {
-			System.out.println("Árvore vazia, retornando...");
+			System.out.println("arvore vazia, retornando...");
 			pause();
 			return;
 		}
@@ -489,7 +503,7 @@ public class Tree {
 		canvas.highlightNode(root);
 		
 		if (leftTree != null) {		
-			System.out.println("Acessando a sub-árvore esquerda:");
+			System.out.println("Acessando a sub-arvore esquerda:");
 			pause();
 			canvas.unHighlightNode(root);
 			leftTree.percorrerPosOrdemVisual(canvas);
@@ -497,14 +511,14 @@ public class Tree {
 		}
 		
 		if (rightTree != null) {
-			System.out.println("Acessando a sub-árvore direita:");
+			System.out.println("Acessando a sub-arvore direita:");
 			pause();
 			canvas.unHighlightNode(root);
 			rightTree.percorrerPosOrdemVisual(canvas);
 			canvas.highlightNode(root);
 		}
 		
-		System.out.println("Acessando o nó atual: ");
+		System.out.println("Acessando o nÃ³ atual: ");
 		System.out.println("Matricula: " + root.getAluno().getMatricula() +
 					       " / Nome: " + root.getAluno().getNome());
 		pause();
@@ -514,6 +528,9 @@ public class Tree {
 		canvas.unHighlightNode(root);
 	}
 	
+	/* Pausa o programa por um curto tempo para deixar as mudanças visíveis
+	 * ao usuário
+	 */
 	public void pause() {
 		try {
 			Thread.sleep(1500);

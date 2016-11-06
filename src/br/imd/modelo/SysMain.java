@@ -1,6 +1,7 @@
 package br.imd.modelo;
 
-import br.imd.visao.MyCanvas;
+import br.imd.modelo.Tree;
+import br.imd.modelo.No;
 import br.imd.visao.TreeDrawer;
 
 public class SysMain {
@@ -16,7 +17,6 @@ public class SysMain {
 		
 		No n = t.busca(4);
 		System.out.println(n.getAluno().getNome());
-		TreePrinter printer = new TreePrinter();
 		
 		/*
 		MyCanvas canvas = new MyCanvas("WOOW", 300, 300);
@@ -42,13 +42,14 @@ public class SysMain {
 		*/
 		
 		TreeDrawer td = new TreeDrawer(t, 800, 400);
-		td.drawTree();
-		
 		//td.percorrerPreOrdem();
 		//td.percorrerInOrdem();
 		//td.percorrerPosOrdem();
-		td.insereAluno(7, "ksfdjksfhj");
+		//td.insereAluno(7, "ksfdjksfhj");
+		//td.remove(4);
 		td.remove(4);
 		td.percorrerPreOrdem();
+		
+		System.out.println("== Fim das ações do programa ==");
 	}
 }
